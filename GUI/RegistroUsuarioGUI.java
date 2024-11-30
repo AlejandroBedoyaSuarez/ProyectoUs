@@ -2,14 +2,15 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import Project.Usuario;
 
 public class RegistroUsuarioGUI extends JFrame {
-    public RegistroUsuarioGUI(JFrame parent) {
+    public RegistroUsuarioGUI(MainGUI mainGUI) {
         setTitle("Registrar Usuario");
         setSize(400, 300);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(parent);
-        setLayout(new GridLayout(5, 2, 10, 10));
+        setLocationRelativeTo(mainGUI);
+        setLayout(new GridLayout(6, 2, 10, 10)); // Ajustar para incluir el botón "Guardar"
         setResizable(false);
 
         // Componentes del formulario
@@ -19,10 +20,25 @@ public class RegistroUsuarioGUI extends JFrame {
         JTextField txtEmail = new JTextField();
         JLabel lblTelefono = new JLabel("Teléfono:");
         JTextField txtTelefono = new JTextField();
-        JLabel lblCedula = new JLabel("Cédula:");
-        JTextField txtCedula = new JTextField();
 
+        JButton btnGuardar = new JButton("Guardar");
         JButton btnSalir = new JButton("Salir");
+
+        // Acción del botón "Guardar"
+        btnGuardar.addActionListener(e -> {
+            String nombre = txtNombre.getText();
+            String email = txtEmail.getText();
+            String telefono = txtTelefono.getText();
+
+            // Validación de datos
+            if (Usuario.esEmailValido(email) && Usuario.esTelefonoValido(telefono)) {
+                Usuario usuario = new Usuario(nombre, email, telefono);
+                mainGUI.agregarRegistro("Usuario registrado:\n" + usuario); // Agregar registro al MainGUI
+                dispose(); // Cerrar la ventana
+            } else {
+                JOptionPane.showMessageDialog(this, "Datos inválidos. Verifique el correo y el teléfono.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         // Acción del botón "Salir"
         btnSalir.addActionListener(e -> dispose());
@@ -34,8 +50,8 @@ public class RegistroUsuarioGUI extends JFrame {
         add(txtEmail);
         add(lblTelefono);
         add(txtTelefono);
-        add(lblCedula);
-        add(txtCedula);
+        add(new JLabel()); // Espacio vacío
+        add(btnGuardar);
         add(new JLabel()); // Espacio vacío
         add(btnSalir);
 
