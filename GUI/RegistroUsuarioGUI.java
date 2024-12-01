@@ -6,11 +6,11 @@ import Project.Usuario;
 
 public class RegistroUsuarioGUI extends JFrame {
     public RegistroUsuarioGUI(MainGUI mainGUI) {
-        setTitle("Registrar Usuario");
+        setTitle("Registro para el Usuario");
         setSize(400, 300);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(mainGUI);
-        setLayout(new GridLayout(6, 2, 10, 10)); // Ajustar para incluir el botón "Guardar"
+        setLayout(new GridLayout(6, 2, 10, 10));
         setResizable(false);
 
         // Componentes del formulario
@@ -26,15 +26,19 @@ public class RegistroUsuarioGUI extends JFrame {
 
         // Acción del botón "Guardar"
         btnGuardar.addActionListener(e -> {
-            String nombre = txtNombre.getText();
-            String email = txtEmail.getText();
-            String telefono = txtTelefono.getText();
+            String nombre = txtNombre.getText().trim();
+            String email = txtEmail.getText().trim();
+            String telefono = txtTelefono.getText().trim();
 
-            // Validación de datos
+            if (nombre.isEmpty() || email.isEmpty() || telefono.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             if (Usuario.esEmailValido(email) && Usuario.esTelefonoValido(telefono)) {
                 Usuario usuario = new Usuario(nombre, email, telefono);
-                mainGUI.agregarRegistro("Usuario registrado:\n" + usuario); // Agregar registro al MainGUI
-                dispose(); // Cerrar la ventana
+                mainGUI.agregarRegistro("Usuario registrado:\n" + usuario);
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Datos inválidos. Verifique el correo y el teléfono.", "Error", JOptionPane.ERROR_MESSAGE);
             }

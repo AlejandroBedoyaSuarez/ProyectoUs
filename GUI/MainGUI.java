@@ -9,19 +9,20 @@ public class MainGUI extends JFrame {
     private ArrayList<String> registros = new ArrayList<>(); // Lista para almacenar los registros
 
     // Estilos globales
-    private Font fuenteTitulo = new Font("Arial", Font.BOLD, 16);
+    private Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 22);
     private Font fuenteTexto = new Font("Arial", Font.PLAIN, 14);
     private Color colorPrimario = Color.RED;
+    private Color colorTexto = new Color(0,0,0);
 
     public MainGUI() {
         // Configuración de la ventana principal
-        setTitle("WOF-Shop");
+        setTitle("WOF-Shop Register");
         setSize(500, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        setIconImage(new ImageIcon("GUI/perrito.jpeg").getImage());
+        setIconImage(new ImageIcon("GUI/img/perrito.jpeg").getImage());
 
         // Barra de Menú
         crearBarraDeMenu();
@@ -50,51 +51,52 @@ public class MainGUI extends JFrame {
         return etiqueta;
     }
 
-    @SuppressWarnings("unused") //Para que no salgan alertas
-    
+    @SuppressWarnings("unused")
     private void crearBarraDeMenu() {
         JMenuBar menuBar = new JMenuBar();
 
         // Menú Archivo
         JMenu menuArchivo = new JMenu("Intro");
 
-        // Submenú Creadores
-        JMenu subMenuCreadores = new JMenu("Creadores");
+        // Submenú Creadores con íconos
+        JMenu subMenuCreadores = new JMenu("Equipo");
 
-        // Creadores
-        JMenuItem creador1 = new JMenuItem("Creador 1");
+        JMenuItem creador1 = new JMenuItem("Creador", new ImageIcon("GUI/img/Alejologo.jpg"));
         creador1.addActionListener(
-                e -> mostrarInformacionCreador("Este usuario fue el creador de la GUI: Alejandro Bedoya"));
+                e -> mostrarInformacionCreador("Creador Código General y Funciones: Alejandro Bedoya"));
 
-        JMenuItem creador2 = new JMenuItem("Creador 2");
+        JMenuItem creador2 = new JMenuItem("Gerente", new ImageIcon("GUI/img/Martinlogo.jpg"));
         creador2.addActionListener(
-                e -> mostrarInformacionCreador("Este fue el creador de las clases principales: Martín Rodriguez"));
+                e -> mostrarInformacionCreador("Ayudante Clases Principales: Martín Rodriguez"));
 
-        JMenuItem creador3 = new JMenuItem("Creador 3");
+        JMenuItem creador3 = new JMenuItem("Junior", new ImageIcon("GUI/img/Alanlogo.jpg"));
         creador3.addActionListener(
-                e -> mostrarInformacionCreador("Este fue el creador de la interfaz de usuario: Alan Velasco"));
+                e -> mostrarInformacionCreador("Ayudante en crear código base: Alan Velasco"));
 
-        JMenuItem creador4 = new JMenuItem("Creador 4");
+        JMenuItem creador4 = new JMenuItem("Diseñador", new ImageIcon("GUI/img/Maiccollogo.jpg"));
         creador4.addActionListener(
-                e -> mostrarInformacionCreador("Este fue el creador que organizó el diseño: Maiccol Zurita"));
+                e -> mostrarInformacionCreador("Organizador de Diseño: Maiccol Zurita"));
 
-        // Añadir los creadores al submenú
+        // Añadir los creadores al submenú con margen
         subMenuCreadores.add(creador1);
+        subMenuCreadores.addSeparator(); // Margen visual
         subMenuCreadores.add(creador2);
+        subMenuCreadores.addSeparator();
         subMenuCreadores.add(creador3);
+        subMenuCreadores.addSeparator();
         subMenuCreadores.add(creador4);
 
         // Añadir el submenú a Archivo
         menuArchivo.add(subMenuCreadores);
 
-        // Opción Salir (Ahora al final)
-        JMenuItem itemSalir = new JMenuItem("Salir");
-        itemSalir.addActionListener(e -> System.exit(0)); // Acción: Cerrar programa
+        // Opción Salir
+        JMenuItem itemSalir = new JMenuItem("Salir", new ImageIcon("GUI/img/salida.png"));
+        itemSalir.addActionListener(e -> System.exit(0));
         menuArchivo.add(itemSalir);
 
         // Menú Ayuda
         JMenu menuAyuda = new JMenu("Ayuda");
-        JMenuItem itemAcercaDe = new JMenuItem("Acerca de");
+        JMenuItem itemAcercaDe = new JMenuItem("Acerca de", new ImageIcon("GUI/img/ayuda.png"));
         itemAcercaDe.addActionListener(e -> JOptionPane.showMessageDialog(
                 this,
                 "WofStore\nVersión Beta\nDesarrollado por Alejandro Bedoya",
@@ -110,19 +112,19 @@ public class MainGUI extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    @SuppressWarnings("unused") // Solo es para quitar las alertas, se ve feo
-
+    @SuppressWarnings("unused")
     private JPanel crearPanelCentral() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Márgenes globales
 
         // Título
-        JLabel lblTitulo = crearEtiquetaTitulo("Bienvenido a WofStore", fuenteTitulo, colorPrimario);
+        JLabel lblTitulo = crearEtiquetaTitulo("Bienvenido al Registro de WofStore", fuenteTitulo, colorPrimario);
 
         // Introducción
         JPanel panelIntroduccion = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel lblIntroduccion1 = new JLabel("Le damos la bienvenida al sistema de registro de la tienda WofStore");
+        JLabel lblIntroduccion1 = crearEtiquetaTexto(
+                "Le damos la bienvenida al sistema de registro de la tienda WofStore", fuenteTexto, colorTexto);
         panelIntroduccion.add(lblIntroduccion1);
 
         // Botones
@@ -132,6 +134,8 @@ public class MainGUI extends JFrame {
 
         btnRegistroUsuario.addActionListener(e -> abrirRegistroUsuario());
         btnRegistrarProducto.addActionListener(e -> abrirRegistroProducto());
+        BotonGoti(btnRegistroUsuario);
+        BotonGoti(btnRegistrarProducto);
 
         panelBotones.add(btnRegistroUsuario);
         panelBotones.add(btnRegistrarProducto);
@@ -160,7 +164,6 @@ public class MainGUI extends JFrame {
         return panel;
     }
 
-    // Método para actualizar el área de registros
     public void agregarRegistro(String registro) {
         registros.add(registro); // Añadir el registro a la lista
         areaRegistros.setText(""); // Limpiar el área de texto
@@ -169,27 +172,46 @@ public class MainGUI extends JFrame {
         }
     }
 
-    // Método para abrir la ventana de Registro Usuario
     private void abrirRegistroUsuario() {
         new RegistroUsuarioGUI(this); // Pasar la referencia de MainGUI a RegistroUsuarioGUI
     }
 
-    // Método para abrir la ventana de Registro Producto
     private void abrirRegistroProducto() {
         new RegistroProductoGUI(this); // Pasar la referencia de MainGUI a RegistroProductoGUI
     }
 
     private void mostrarInformacionCreador(String mensaje) {
-        JFrame ventanaCreador = new JFrame("Información del Creador");
+        JFrame ventanaCreador = new JFrame("Información");
         ventanaCreador.setSize(400, 200);
         ventanaCreador.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         ventanaCreador.setLocationRelativeTo(this);
 
         JLabel lblMensaje = new JLabel("<html><center>" + mensaje + "</center></html>", SwingConstants.CENTER);
-        lblMensaje.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblMensaje.setFont(new Font("Roboto", Font.PLAIN, 16));
 
         ventanaCreador.add(lblMensaje);
         ventanaCreador.setVisible(true);
+    }
+
+    private void BotonGoti(JButton boton) {
+        boton.setFocusPainted(false); // Quita el borde de enfoque
+        boton.setBackground(new Color(200, 0, 0));
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Roboto", Font.BOLD, 14));
+
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(255, 50, 50)); // Cambia color al pasar el mouse
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(200, 0, 0)); // Restaura el color original
+            }
+
+        });
+
     }
 
 }
