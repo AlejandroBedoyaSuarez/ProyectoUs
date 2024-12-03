@@ -41,7 +41,7 @@ public class RegistroProductoGUI extends JFrame {
 
                 if (precio > 0 && cantidad > 0) {
                     Producto producto = new Producto(nombre, precio, cantidad);
-                    mainGUI.agregarRegistro("Producto registrado:\n" + producto.getNombre() + ", Precio: $" + producto.getPrecioUnitario() + ", Cantidad: " + producto.getCantidad());
+                    mainGUI.agregarRegistroProducto("Producto registrado:\n" + producto.getNombre() + ", Precio: $" + producto.getPrecioUnitario() + ", Cantidad: " + producto.getCantidad());
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "El precio y la cantidad deben ser mayores a 0.", "Error", JOptionPane.ERROR_MESSAGE);

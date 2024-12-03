@@ -5,19 +5,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MainGUI extends JFrame {
-    private JTextArea areaRegistros; // Área de texto para mostrar registros
+    private JTextArea areaRegistros; // Área de texto para mostrar registros generales
     private ArrayList<String> registros = new ArrayList<>(); // Lista para almacenar los registros
+    private JTextArea areaInformacionUsuarios; // Área de texto para los registros de información de usuarios
+    private JTextArea areaInformeProductos; // Área de texto para los registros de informe de productos
 
     // Estilos globales
     private Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 22);
     private Font fuenteTexto = new Font("Arial", Font.PLAIN, 14);
     private Color colorPrimario = Color.RED;
-    private Color colorTexto = new Color(0,0,0);
+    private Color colorTexto = new Color(0, 0, 0);
 
     public MainGUI() {
         // Configuración de la ventana principal
         setTitle("WOF-Shop Register");
-        setSize(500, 400);
+        setSize(500, 500); // Ampliar el tamaño de la ventana para incluir nuevos botones
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -30,6 +32,10 @@ public class MainGUI extends JFrame {
         // Panel Central
         JPanel panelCentral = crearPanelCentral();
         add(panelCentral, BorderLayout.CENTER);
+
+        // Inicialización de las áreas de información
+        areaInformacionUsuarios = new JTextArea(10, 40);
+        areaInformeProductos = new JTextArea(10, 40);
 
         // Mostrar la ventana
         setVisible(true);
@@ -141,15 +147,36 @@ public class MainGUI extends JFrame {
         panelBotones.add(btnRegistrarProducto);
 
         // Área de registros
-        JLabel lblRegistros = new JLabel("Registros:");
+        JLabel lblRegistros = new JLabel("Lema:");
         lblRegistros.setAlignmentX(Component.CENTER_ALIGNMENT);
         areaRegistros = new JTextArea(10, 40);
         areaRegistros.setEditable(false);
+        areaRegistros.setText("Las mascotas son nuestra prioridad." + "\r\n" + "Sabemos que cada peludo, emplumado"
+                + "\r\n" + "o escamoso miembro de tu familia merece lo mejor." + "\r\n"
+                + "por eso nos dedicamos a ofrecer" + "\r\n" + "productos de la más alta calidad como" + "\r\n"
+                + "alimentos especializados hasta juguetes diseñados para estimular su bienestar," + "\r\n" +
+                "trabajamos para cubrir todas las necesidades de tu compañero" + "\r\n"
+                + "garantizando que su vida sea feliz y saludable."); // Agregada
+        // la
+        // frase
         areaRegistros.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // Borde
         areaRegistros.setBackground(Color.WHITE); // Fondo
         areaRegistros.setForeground(Color.DARK_GRAY); // Texto
 
         JScrollPane scrollPane = new JScrollPane(areaRegistros);
+
+        // Nuevos botones: "Información" e "Informe"
+        JPanel panelNuevosBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton btnInformacion = new JButton("Personas");
+        JButton btnInforme = new JButton("Productos");
+
+        btnInformacion.addActionListener(e -> mostrarInformacionUsuarios());
+        btnInforme.addActionListener(e -> mostrarInformeProductos());
+        BotonGoti(btnInformacion);
+        BotonGoti(btnInforme);
+
+        panelNuevosBotones.add(btnInformacion);
+        panelNuevosBotones.add(btnInforme);
 
         // Añadir todo al panel
         panel.add(lblTitulo);
@@ -160,6 +187,8 @@ public class MainGUI extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
         panel.add(lblRegistros); // Label "Registros"
         panel.add(scrollPane); // Área de registros
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+        panel.add(panelNuevosBotones); // Nuevos botones
 
         return panel;
     }
@@ -172,6 +201,14 @@ public class MainGUI extends JFrame {
         }
     }
 
+    public void agregarRegistroUsuario(String registro) {
+        areaInformacionUsuarios.append(registro + "\n"); // Añadir registro de usuario
+    }
+
+    public void agregarRegistroProducto(String registro) {
+        areaInformeProductos.append(registro + "\n"); // Añadir registro de producto
+    }
+
     private void abrirRegistroUsuario() {
         new RegistroUsuarioGUI(this); // Pasar la referencia de MainGUI a RegistroUsuarioGUI
     }
@@ -181,7 +218,7 @@ public class MainGUI extends JFrame {
     }
 
     private void mostrarInformacionCreador(String mensaje) {
-        JFrame ventanaCreador = new JFrame("Información");
+        JFrame ventanaCreador = new JFrame("Estudiantes de ITQ");
         ventanaCreador.setSize(400, 200);
         ventanaCreador.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         ventanaCreador.setLocationRelativeTo(this);
@@ -193,25 +230,34 @@ public class MainGUI extends JFrame {
         ventanaCreador.setVisible(true);
     }
 
-    private void BotonGoti(JButton boton) {
-        boton.setFocusPainted(false); // Quita el borde de enfoque
-        boton.setBackground(new Color(200, 0, 0));
-        boton.setForeground(Color.WHITE);
-        boton.setFont(new Font("Roboto", Font.BOLD, 14));
+    private void mostrarInformacionUsuarios() {
+        JFrame ventanaUsuarios = new JFrame("Información de Usuarios");
+        ventanaUsuarios.setSize(400, 300);
+        ventanaUsuarios.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        ventanaUsuarios.setLocationRelativeTo(this);
 
-        boton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                boton.setBackground(new Color(255, 50, 50)); // Cambia color al pasar el mouse
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                boton.setBackground(new Color(200, 0, 0)); // Restaura el color original
-            }
-
-        });
-
+        ventanaUsuarios.add(new JScrollPane(areaInformacionUsuarios));
+        ventanaUsuarios.setVisible(true);
     }
 
+    private void mostrarInformeProductos() {
+        JFrame ventanaProductos = new JFrame("Información de Productos");
+        ventanaProductos.setSize(400, 300);
+        ventanaProductos.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        ventanaProductos.setLocationRelativeTo(this);
+
+        ventanaProductos.add(new JScrollPane(areaInformeProductos));
+        ventanaProductos.setVisible(true);
+    }
+
+    private void BotonGoti(JButton boton) {
+        boton.setFocusPainted(false);
+        boton.setForeground(Color.WHITE);
+        boton.setBackground(colorPrimario);
+        boton.setFont(new Font("Arial", Font.BOLD, 14));
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MainGUI::new);
+    }
 }

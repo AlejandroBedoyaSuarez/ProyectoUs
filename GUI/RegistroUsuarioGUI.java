@@ -37,7 +37,7 @@ public class RegistroUsuarioGUI extends JFrame {
 
             if (Usuario.esEmailValido(email) && Usuario.esTelefonoValido(telefono)) {
                 Usuario usuario = new Usuario(nombre, email, telefono);
-                mainGUI.agregarRegistro("Usuario registrado:\n" + usuario);
+                mainGUI.agregarRegistroUsuario("Usuario registrado:\n" + usuario);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Datos inválidos. Verifique el correo y el teléfono.", "Error", JOptionPane.ERROR_MESSAGE);
